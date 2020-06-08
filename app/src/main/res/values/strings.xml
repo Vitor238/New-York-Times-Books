@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">New York Times Books</string>
+    <!-- Common -->
+
+    <!-- Books Activity -->
+    <string name="books_title">Books</string>
 </resources>

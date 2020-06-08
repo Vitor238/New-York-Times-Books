@@ -17,9 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerBooks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMain"
+        tools:itemCount="10"
+        tools:listitem="@layout/activity_books" />
 </androidx.constraintlayout.widget.ConstraintLayout>
