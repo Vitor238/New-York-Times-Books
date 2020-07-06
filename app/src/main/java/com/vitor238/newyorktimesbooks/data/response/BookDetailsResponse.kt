@@ -5,6 +5,6 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BookDetailsResponse(
     val title: String,
-    val authors: String,
+    val author: String,
     val description: String
 )
