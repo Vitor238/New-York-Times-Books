@@ -25,7 +25,8 @@ class BooksViewModel : ViewModel() {
                         for (results in bookBodyResponse.bookResults) {
                             val book = Book(
                                 title = results.bookDetailsResponse[0].title,
-                                author = results.bookDetailsResponse[0].author
+                                author = results.bookDetailsResponse[0].author,
+                                description = results.bookDetailsResponse[0].description
                             )
                             books.add(book)
                         }

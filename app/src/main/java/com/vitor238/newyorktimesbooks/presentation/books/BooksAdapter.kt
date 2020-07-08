@@ -9,12 +9,13 @@ import com.vitor238.newyorktimesbooks.data.model.Book
 import kotlinx.android.synthetic.main.item_book.view.*
 
 class BooksAdapter(
-    private val books: List<Book>
+    private val books: List<Book>,
+    val onItemClickListener: ((book: Book) -> Unit)
 ) : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false)
-        return BooksViewHolder(view)
+        return BooksViewHolder(view, onItemClickListener)
     }
 
     override fun getItemCount() = books.size
@@ -24,14 +25,20 @@ class BooksAdapter(
         holder.bindView(book)
     }
 
-    class BooksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class BooksViewHolder(
+        itemView: View,
+        private val onItemClickListener: ((book: Book) -> Unit)
+    ) : RecyclerView.ViewHolder(itemView) {
 
-        private val textTitle = itemView.textAuthor
+        private val textTitle = itemView.textTitle
         private val textAuthor = itemView.textAuthor
 
         fun bindView(book: Book) {
             textTitle.text = book.title
             textAuthor.text = book.author
+            itemView.setOnClickListener {
+                onItemClickListener.invoke(book)
+            }
         }
     }
 }
