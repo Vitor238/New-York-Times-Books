@@ -4,36 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".presentation.details.BookDetailsActivity">
 
+    <include layout="@layout/include_toolbar" />
+
     <TextView
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        style="@style/MyTextViewLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/book_details_title_label"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:text="@string/book_details_title_label" />
 
     <TextView
         android:id="@+id/bookDetailsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        tools:text="Title 1" />
+        tools:text="Title 1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"/>
 
     <TextView
+        style="@style/MyTextViewLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/book_details_description_label"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/book_details_description_label" />
 
     <TextView
         android:id="@+id/bookDetailsDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        tools:text="Description 1" />
+        tools:text="Description 1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"/>
 
 </LinearLayout>

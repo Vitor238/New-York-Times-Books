@@ -7,17 +7,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vitor238.newyorktimesbooks.R
+import com.vitor238.newyorktimesbooks.presentation.base.BaseActiviy
 import com.vitor238.newyorktimesbooks.presentation.details.BookDetailsActivity
 import kotlinx.android.synthetic.main.activity_books.*
+import kotlinx.android.synthetic.main.include_toolbar.*
 
-class BooksActivity : AppCompatActivity() {
+class BooksActivity : BaseActiviy() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_books)
 
-        toolbarMain.title = getString(R.string.books_title)
-        setSupportActionBar(toolbarMain)
+        setupToolbar(toolbarMain,R.string.books_title)
 
         val viewModel: BooksViewModel = ViewModelProviders.of(this).get(BooksViewModel::class.java)
 
