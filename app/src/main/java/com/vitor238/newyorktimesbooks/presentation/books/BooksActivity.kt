@@ -1,7 +1,6 @@
 package com.vitor238.newyorktimesbooks.presentation.books
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +40,14 @@ class BooksActivity : BaseActiviy() {
             }
         })
 
+        viewModel.viewFlipperLiveData.observe(this, Observer {
+            it?.let { viewFlipper ->
+                viewFlipperBooks.displayedChild = viewFlipper.first
+                viewFlipper.second?.let { errorMessageId ->
+                    textViewError.text = getString(errorMessageId)
+                }
+            }
+        })
 
         viewModel.getBooks()
     }
