@@ -2,10 +2,10 @@ package com.vitor238.newyorktimesbooks.presentation.books
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vitor238.newyorktimesbooks.R
+import com.vitor238.newyorktimesbooks.data.repository.BooksApiDataSource
 import com.vitor238.newyorktimesbooks.presentation.base.BaseActiviy
 import com.vitor238.newyorktimesbooks.presentation.details.BookDetailsActivity
 import kotlinx.android.synthetic.main.activity_books.*
@@ -17,9 +17,10 @@ class BooksActivity : BaseActiviy() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_books)
 
-        setupToolbar(toolbarMain,R.string.books_title)
+        setupToolbar(toolbarMain, R.string.books_title)
 
-        val viewModel: BooksViewModel = ViewModelProviders.of(this).get(BooksViewModel::class.java)
+        val viewModel: BooksViewModel = BooksViewModel.ViewModelFactory(BooksApiDataSource())
+            .create(BooksViewModel::class.java)
 
         viewModel.booksLiveData.observe(this, Observer {
             it?.let { books ->

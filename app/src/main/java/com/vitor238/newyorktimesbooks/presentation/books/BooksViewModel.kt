@@ -2,54 +2,49 @@ package com.vitor238.newyorktimesbooks.presentation.books
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.vitor238.newyorktimesbooks.R
-import com.vitor238.newyorktimesbooks.data.ApiService
+import com.vitor238.newyorktimesbooks.data.BooksResult
 import com.vitor238.newyorktimesbooks.data.model.Book
-import com.vitor238.newyorktimesbooks.data.response.BookBodyResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.vitor238.newyorktimesbooks.data.repository.BooksRepository
 
-class BooksViewModel : ViewModel() {
+class BooksViewModel(private val dataSource: BooksRepository) : ViewModel() {
 
     val booksLiveData: MutableLiveData<List<Book>> = MutableLiveData()
     val viewFlipperLiveData: MutableLiveData<Pair<Int, Int?>> = MutableLiveData()
 
     fun getBooks() {
-        ApiService.service.getBooks().enqueue(object : Callback<BookBodyResponse> {
-            override fun onResponse(
-                call: Call<BookBodyResponse>,
-                response: Response<BookBodyResponse>
-            ) {
-                when {
-                    response.isSuccessful -> {
-                        val books: MutableList<Book> = mutableListOf()
-                        response.body()?.let { bookBodyResponse ->
-                            for (result in bookBodyResponse.bookResults) {
 
-                                val book = result.bookDetailsResponse[0].getBookModel()
-                                books.add(book)
-                            }
-                        }
-                        booksLiveData.value = books
-                        viewFlipperLiveData.value = Pair(VIEW_FLIPPER_BOOKS, null)
-                    }
-                    response.code() == 401 -> {
+        dataSource.getBooks { result: BooksResult ->
+            when (result) {
+                is BooksResult.Success -> {
+                    booksLiveData.value = result.books
+                    viewFlipperLiveData.value = Pair(VIEW_FLIPPER_BOOKS, null)
+                }
+                is BooksResult.ApiError -> {
+                    if (result.statusCode == 401) {
                         viewFlipperLiveData.value =
                             Pair(VIEW_FLIPPER_ERROR, R.string.books_error_401)
-                    }
-                    else -> {
+                    } else {
                         viewFlipperLiveData.value =
                             Pair(VIEW_FLIPPER_ERROR, R.string.books_error_400_generic)
                     }
                 }
+                is BooksResult.ServerError -> {
+                    viewFlipperLiveData.value =
+                        Pair(VIEW_FLIPPER_ERROR, R.string.books_error_500_generic)
+                }
             }
+        }
+    }
 
-            override fun onFailure(call: Call<BookBodyResponse>, t: Throwable) {
-                viewFlipperLiveData.value =
-                    Pair(VIEW_FLIPPER_ERROR, R.string.books_error_500_generic)
+    class ViewModelFactory(private val dataSource: BooksRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(BooksViewModel::class.java)) {
+                return BooksViewModel(dataSource) as T
             }
-        })
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 
     companion object {
